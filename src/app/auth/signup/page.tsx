@@ -43,6 +43,12 @@ export default function SignupPage() {
         return
       }
 
+      // Check if email confirmation is required
+      if (data.requiresConfirmation) {
+        setError('Please check your email and click the confirmation link to complete signup. Then you can log in.')
+        return
+      }
+
       // Sign in the user
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,

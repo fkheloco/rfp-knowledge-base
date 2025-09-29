@@ -33,6 +33,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check if email confirmation is required
+    if (authData.user && !authData.session) {
+      return NextResponse.json({
+        success: true,
+        requiresConfirmation: true,
+        message: 'Please check your email and click the confirmation link to complete signup.'
+      })
+    }
+
     // Use admin client to create organization (bypasses RLS)
     const { data: orgData, error: orgError } = await supabaseAdmin
       .from('organizations')
