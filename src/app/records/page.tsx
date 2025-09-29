@@ -177,7 +177,11 @@ export default function RecordsPage() {
           ) : (
             <div className="space-y-2">
               {filteredCompanies.map((company) => (
-                <Card key={company.id} className="hover:shadow-md transition-shadow">
+                <Card 
+                  key={company.id} 
+                  className="hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => window.location.href = `/records/companies/${company.id}`}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -195,10 +199,25 @@ export default function RecordsPage() {
                         <span className={`px-2 py-1 text-xs rounded ${getStatusColor(company.status)}`}>
                           {company.status || 'Draft'}
                         </span>
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.location.href = `/records/companies/${company.id}`
+                          }}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-red-600 hover:text-red-700"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            // Handle delete
+                          }}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -222,7 +241,11 @@ export default function RecordsPage() {
           ) : (
             <div className="space-y-2">
               {filteredPeople.map((person) => (
-                <Card key={person.id} className="hover:shadow-md transition-shadow">
+                <Card 
+                  key={person.id} 
+                  className="hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => window.location.href = `/records/people/${person.id}`}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -240,10 +263,25 @@ export default function RecordsPage() {
                         <span className={`px-2 py-1 text-xs rounded ${getStatusColor(person.status)}`}>
                           {person.status || 'Draft'}
                         </span>
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.location.href = `/records/people/${person.id}`
+                          }}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-red-600 hover:text-red-700"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            // Handle delete
+                          }}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -267,7 +305,11 @@ export default function RecordsPage() {
           ) : (
             <div className="space-y-2">
               {filteredProjects.map((project) => (
-                <Card key={project.id} className="hover:shadow-md transition-shadow">
+                <Card 
+                  key={project.id} 
+                  className="hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => window.location.href = `/records/projects/${project.id}`}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -290,10 +332,25 @@ export default function RecordsPage() {
                         <span className={`px-2 py-1 text-xs rounded ${getStatusColor(project.status)}`}>
                           {project.status || 'Draft'}
                         </span>
-                        <Button variant="ghost" size="sm">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.location.href = `/records/projects/${project.id}`
+                          }}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-red-600 hover:text-red-700"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            // Handle delete
+                          }}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
