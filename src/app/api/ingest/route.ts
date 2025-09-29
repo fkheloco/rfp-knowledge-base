@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,8 +13,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get the file from Supabase Storage
-    const { data: fileData, error: downloadError } = await supabase.storage
+    // Get the file from Supabase Storage using admin client
+    const { data: fileData, error: downloadError } = await supabaseAdmin.storage
       .from('documents')
       .download(filePath)
 
@@ -55,10 +56,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    // Save the processed data to the appropriate table
+    // Save the processed data to the appropriate table using admin client
     let result
     if (mockResult.type === 'person') {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('people')
         .insert([{
           org_id: userData.org_id,
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
       if (error) throw error
       result = data
     } else if (mockResult.type === 'company') {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('companies')
         .insert([{
           org_id: userData.org_id,
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
       if (error) throw error
       result = data
     } else if (mockResult.type === 'project') {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('projects')
         .insert([{
           org_id: userData.org_id,
