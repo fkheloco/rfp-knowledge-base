@@ -23,47 +23,38 @@ export default function SignupPage() {
     setError('')
 
     try {
-      // Create user account first
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // Use API route that bypasses RLS
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          orgName
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Signup failed')
+        return
+      }
+
+      // Sign in the user
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (authError) {
-        setError(authError.message)
+      if (signInError) {
+        setError('Account created but sign in failed. Please try logging in.')
         return
       }
 
-      if (authData.user) {
-        // Create organization
-        const { data: orgData, error: orgError } = await supabase
-          .from('organizations')
-          .insert([{ name: orgName }])
-          .select()
-          .single()
-
-        if (orgError) {
-          setError(orgError.message)
-          return
-        }
-
-        // Create user record
-        const { error: userError } = await supabase
-          .from('users')
-          .insert([{
-            id: authData.user.id,
-            email,
-            org_id: orgData.id,
-            role: 'admin'
-          }])
-
-        if (userError) {
-          setError(userError.message)
-          return
-        }
-
-        router.push('/dashboard')
-      }
+      router.push('/dashboard')
     } catch (error) {
       console.error('Signup error:', error)
       setError('An unexpected error occurred')
