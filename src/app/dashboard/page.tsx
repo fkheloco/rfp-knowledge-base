@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Building2, Users, FolderOpen, CheckCircle, Clock, AlertCircle } from 'lucide-react'
@@ -57,7 +58,7 @@ export default function DashboardPage() {
         ])
 
         // Fetch status counts
-        const [aiGeneratedRes, purelyVerifiedRes, clientVerifiedRes] = await Promise.all([
+        const [aiGeneratedRes] = await Promise.all([
           supabase
             .from('companies')
             .select('*', { count: 'exact', head: true })
@@ -249,7 +250,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-slate-600">Add new records via file upload</p>
               </div>
             </a>
-            <a
+            <Link
               href="/records"
               className="flex items-center p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
             >

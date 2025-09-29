@@ -11,7 +11,7 @@ interface UploadedFile {
   file: File
   id: string
   status: 'uploading' | 'processing' | 'completed' | 'error'
-  result?: any
+  result?: unknown
   error?: string
 }
 
@@ -45,7 +45,7 @@ export default function UploadPage() {
     }
   }
 
-  const handleFiles = (newFiles: File[]) => {
+  const handleFiles = useCallback((newFiles: File[]) => {
     const validFiles = newFiles.filter(file => {
       const validTypes = [
         'application/pdf',
@@ -68,7 +68,7 @@ export default function UploadPage() {
     uploadedFiles.forEach(uploadedFile => {
       processFile(uploadedFile)
     })
-  }
+  }, [])
 
   const processFile = async (uploadedFile: UploadedFile) => {
     try {
@@ -280,7 +280,7 @@ export default function UploadPage() {
               <div>
                 <h3 className="font-medium text-slate-900">AI Processing</h3>
                 <p className="text-sm text-slate-600">
-                  Our AI extracts structured information and creates draft records with "AI-Generated" status.
+                  Our AI extracts structured information and creates draft records with &quot;AI-Generated&quot; status.
                 </p>
               </div>
             </div>

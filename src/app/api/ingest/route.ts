@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
-    const { filePath, fileName, fileType } = await request.json()
+    const { filePath, fileName } = await request.json()
 
     if (!filePath || !fileName) {
       return NextResponse.json(

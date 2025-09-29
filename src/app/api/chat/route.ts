@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, context, orgId } = await request.json()
+    const { message, context } = await request.json()
 
     if (!message) {
       return NextResponse.json(
