@@ -81,16 +81,28 @@ export default function UploadPage() {
       const fileExt = uploadedFile.file.name.split('.').pop()
       const fileName = `${uploadedFile.id}.${fileExt}`
       
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('documents')
-        .upload(fileName, uploadedFile.file)
+      // Use admin client for file upload to bypass RLS
+      const response = await fetch('/api/upload-file', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileName: uploadedFile.file.name,
+          fileContent: await uploadedFile.file.text(),
+          fileType: uploadedFile.file.type
+        })
+      })
 
-      if (uploadError) {
-        throw uploadError
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Upload failed')
       }
 
+      const { filePath } = await response.json()
+
       // Call AI processing API
-      const response = await fetch('/api/ingest', {
+      const ingestResponse = await fetch('/api/ingest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,11 +114,11 @@ export default function UploadPage() {
         })
       })
 
-      if (!response.ok) {
+      if (!ingestResponse.ok) {
         throw new Error('Failed to process file')
       }
 
-      const result = await response.json()
+      const result = await ingestResponse.json()
 
       // Update status to completed
       setFiles(prev => prev.map(f => 
