@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { 
   Building2, 
-  Users, 
   FolderOpen, 
   Upload, 
   MessageSquare, 
@@ -20,7 +19,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [user, setUser] = useState<unknown>(null)
+  const [user, setUser] = useState<{ email?: string } | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
