@@ -263,7 +263,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-slate-900">View Records</p>
                 <p className="text-xs text-slate-600">Browse and edit your database</p>
               </div>
-            </a>
+            </Link>
             <a
               href="/chat"
               className="flex items-center p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
