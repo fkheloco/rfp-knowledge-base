@@ -23,19 +23,7 @@ export default function SignupPage() {
     setError('')
 
     try {
-      // Create organization first
-      const { data: orgData, error: orgError } = await supabase
-        .from('organizations')
-        .insert([{ name: orgName }])
-        .select()
-        .single()
-
-      if (orgError) {
-        setError(orgError.message)
-        return
-      }
-
-      // Create user account
+      // Create user account first
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -47,6 +35,18 @@ export default function SignupPage() {
       }
 
       if (authData.user) {
+        // Create organization
+        const { data: orgData, error: orgError } = await supabase
+          .from('organizations')
+          .insert([{ name: orgName }])
+          .select()
+          .single()
+
+        if (orgError) {
+          setError(orgError.message)
+          return
+        }
+
         // Create user record
         const { error: userError } = await supabase
           .from('users')
@@ -64,7 +64,8 @@ export default function SignupPage() {
 
         router.push('/dashboard')
       }
-    } catch {
+    } catch (error) {
+      console.error('Signup error:', error)
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
